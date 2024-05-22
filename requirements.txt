@@ -1,4 +1,11 @@
+beautifulsoup4
+langchain
+langchain-core
+langchain-community
+langchain-openai
 pymongo
 python-dotenv
 scrapy
+scrapy-fake-useragent
+scrapy-proxies
 selenium

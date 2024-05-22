@@ -35,12 +35,12 @@ class HandelsblattCrawler(scrapy.Spider):
         self.wait = WebDriverWait(self.driver, 10)
 
         # Initialize MongoDB connection
-        self.client = MongoClient(MONGO_URI)
-        self.db = self.client[MONGO_DATABASE]
+        self.mongo_client = MongoClient(MONGO_URI)
+        self.db = self.mongo_client[MONGO_DATABASE]
         self.collection = self.db[MONGO_COLLECTION]
         logging.info("MongoDB client initialized.")
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         logging.info(f"Processing URL: {response.url}")
         self.driver.get(response.url)
 
@@ -73,4 +73,4 @@ class HandelsblattCrawler(scrapy.Spider):
     def closed(self, reason):
         logging.info("Closing Selenium WebDriver.")
         self.driver.quit()
-        self.client.close()
+        self.mongo_client.close()

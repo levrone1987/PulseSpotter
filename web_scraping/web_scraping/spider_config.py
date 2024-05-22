@@ -9,7 +9,7 @@ load_dotenv(ROOT_DIR.joinpath(".env"))
 
 SPIDER_CONFIG = {
     'handelsblatt_crawler': {
-        'max_pages': 5,
+        'max_pages': 1,
         'start_urls': [
             'https://www.handelsblatt.com/finanzen/banken-versicherungen/',
             'https://www.handelsblatt.com/finanzen/banken-versicherungen/banken/',
@@ -44,3 +44,6 @@ MONGO_URI = 'mongodb+srv://{username}:{password}@cluster-v1.gihuvyk.mongodb.net/
 )
 MONGO_DATABASE = 'insightfinder-dev'
 MONGO_COLLECTION = 'content'
+
+# OpenAI configuration
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

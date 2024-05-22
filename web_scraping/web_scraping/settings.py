@@ -21,16 +21,8 @@ BOT_NAME = "web_scraping"
 SPIDER_MODULES = ["web_scraping.spiders"]
 NEWSPIDER_MODULE = "web_scraping.spiders"
 
-# Use a single ProxyMesh proxy
-HTTP_PROXY = 'http://{username}:{password}@proxy.proxyMesh.com:31280'.format(
-    username=os.getenv('PROXYMESH_USER'),
-    password=os.getenv('PROXYMESH_PASSWORD'),
-)
-
 # Proxy settings
-PROXY_POOL_ENABLED = True
-HTTPPROXY_ENABLED = True
-
+HTTPPROXY_ENABLED = False
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = "web_scraping (+http://www.yourdomain.com)"
@@ -47,10 +39,11 @@ ROBOTSTXT_OBEY = True
 DOWNLOAD_DELAY = 2
 
 # Override the default request headers:
-# DEFAULT_REQUEST_HEADERS = {
-#    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-#    "Accept-Language": "en",
-# }
+DEFAULT_REQUEST_HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+}
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -61,11 +54,8 @@ DOWNLOAD_DELAY = 2
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 1,
-    'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': None,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
-    # 'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
 }
 
 # Enable or disable extensions
@@ -85,7 +75,7 @@ DOWNLOADER_MIDDLEWARES = {
 AUTOTHROTTLE_ENABLED = True
 
 # The initial download delay
-AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_START_DELAY = 1
 
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 60
