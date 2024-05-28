@@ -3,9 +3,10 @@ langchain
 langchain-core
 langchain-community
 langchain-openai
+more-itertools
+pandas
 pymongo
+dateparser
 python-dotenv
+requests
 scrapy
-scrapy-fake-useragent
-scrapy-proxies
-selenium

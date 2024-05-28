@@ -15,8 +15,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from config import DATA_DIR
 from core.llm import extract_news_article_text
-from ..items import NewsContent
-from ..spider_config import MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION
+from web_scraping.web_scraping.items import NewsContent
+from web_scraping.web_scraping.spider_config import MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION
 
 
 def clean_html(soup_element):
