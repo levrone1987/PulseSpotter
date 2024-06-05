@@ -26,6 +26,10 @@ WEBSITES = {
     "tagesschau": {
         "base_url": "https://www.tagesschau.de",
         "enabled": True,
+    },
+    "faz": {
+        "base_url": "https://www.faz.net",
+        "enabled": True,
     }
 }
 
@@ -34,6 +38,7 @@ CRAWL_CONFIGS = {
         "search_url_template": "https://www.spiegel.de/nachrichtenarchiv/artikel-{date}.html",
         "date_format": "%d.%m.%Y",
         "request_params": {
+            "block_resource": "image,media",
         },
         "articles_pattern": """//section[@data-area="article-teaser-list"]//div[@data-block-el="articleTeaser"]//a/@href""",
     },
@@ -41,10 +46,8 @@ CRAWL_CONFIGS = {
         "search_url_template": "https://www.handelsblatt.com/archiv/?date={date}",
         "date_format": "%Y-%m-%d",
         "request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
             "js_render": "true",
-            "js_instructions": """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]""",
+            "block_resource": "image,media",
         },
         "articles_pattern": "//app-default-teaser//a/@href",
     },
@@ -52,9 +55,14 @@ CRAWL_CONFIGS = {
         "search_url_template": "https://www.tagesschau.de/archiv?datum={date}",
         "date_format": "%Y-%m-%d",
         "request_params": {
+            "block_resource": "image,media",
         },
         "articles_pattern": """//div[@class="copytext-element-wrapper__vertical-only"]//div[contains(@class, "teaser-right")][not(.//span[contains(@class, "label") and (contains(., 'podcast') or contains(., 'liveblog'))])]//div[@class="teaser-right__teaserheadline"]//a/@href""",
     },
+    "faz": {
+        "request_params": {
+        },
+    }
 }
 
 SCRAPE_CONFIGS = {
@@ -62,8 +70,9 @@ SCRAPE_CONFIGS = {
         "request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
+            "block_resources": "image,media",
             "js_render": "true",
-            "js_instructions": """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]""",
+            # "js_instructions": """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]""",
         },
         "extract_patterns": {
             "title": """//main[@id='Inhalt']//article//header//h2//span[contains(@class, 'leading-tight')]//span//text()""",
@@ -76,8 +85,9 @@ SCRAPE_CONFIGS = {
         "request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
+            "block_resources": "image,media",
             "js_render": "true",
-            "js_instructions": """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]""",
+            # "js_instructions": """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]""",
         },
         "extract_patterns": {
             "title": "//app-header-content-headline//h2/text()",
@@ -88,6 +98,11 @@ SCRAPE_CONFIGS = {
     },
     "tagesschau": {
         "request_params": {
+            "premium_proxy": "true",
+            "proxy_country": "de",
+            "block_resources": "image,media",
+            "js_render": "true",
+            "js_instructions": """[{"wait_for":".content-wrapper"}]""",
         },
         "extract_patterns": {
             "title": """//main[contains(@class, 'content-wrapper')]//div[@class='seitenkopf__title']//h1[@class='seitenkopf__headline']//span[@class='seitenkopf__headline--text']//text()""",

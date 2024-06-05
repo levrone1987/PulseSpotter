@@ -1,5 +1,5 @@
 from pandas import date_range
-from content_ingestion.crawlers.news_archive import NewsArchiveCrawler
+from content_ingestion.crawlers.site_archive_crawler import SiteArchiveCrawler
 from content_ingestion.config import WEBSITES
 
 
@@ -10,6 +10,6 @@ if __name__ == '__main__':
     websites_to_crawl = [site_key for site_key, site_params in WEBSITES.items() if site_params.get("enabled")]
 
     for site_key in websites_to_crawl:
-        crawler = NewsArchiveCrawler.load(site_key)
+        crawler = SiteArchiveCrawler.load(site_key)
         for date in date_range(start_date, end_date).strftime("%Y-%m-%d").tolist():
             crawler.crawl_articles(date)
