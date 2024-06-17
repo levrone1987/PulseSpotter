@@ -3,11 +3,10 @@ from pymongo import MongoClient, errors
 from tqdm import tqdm
 
 from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION, ZENROWS_API_KEY
-from content_ingestion.utils import parse_website
+from content_ingestion.parse_utils import parse_website, parse_date
 
 if __name__ == '__main__':
     request_params = {
-        "block_resources": "image,media",
         "premium_proxy": "true",
         "proxy_country": "de",
     }
@@ -23,26 +22,29 @@ if __name__ == '__main__':
             db = mongo_client[MONGO_DATABASE]
             collection = db[MONGO_COLLECTION]
 
-            query = {'visited': True, "site_name": "faz", "parsed_date": {"$exists": False}}
+            query = {"site_name": "spiegel", "parsed_date": {"$exists": False}}
             cursor = collection.find(query)
             num_docs = collection.count_documents(query)
             pbar = tqdm(total=num_docs)
 
             for doc in cursor:
-                site_name = doc['site_name']
-                site_url = doc["url"]
-                print(site_url)
+                # site_name = doc['site_name']
+                # site_url = doc["url"]
+                # print(site_url)
+                # request_params["url"] = site_url
+                # request_params["apikey"] = ZENROWS_API_KEY
+                # response = requests.get("https://api.zenrows.com/v1/", params=request_params)
+                # response.raise_for_status()
+                # parsed_content = parse_website(response.text, extract_patterns)
 
-                request_params["url"] = site_url
-                request_params["apikey"] = ZENROWS_API_KEY
-                response = requests.get("https://api.zenrows.com/v1/", params=request_params)
-                response.raise_for_status()
+                published_date = doc["published_date"]
+                parsed_date = parse_date(published_date, output_format="%Y-%m-%d")
 
-                parsed_content = parse_website(response.text, extract_patterns)
                 collection.update_one(
                     filter={"_id": doc["_id"]},
                     update={
-                        "$set": parsed_content,
+                        "$set": {"parsed_date": parsed_date, "raw_date": published_date},
+                        # "$set": parsed_content,
                         "$unset": {"published_date": ""},
                     },
                 )

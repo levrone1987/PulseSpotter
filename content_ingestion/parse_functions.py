@@ -2,7 +2,6 @@ import re
 
 import dateparser
 from more_itertools import first
-from scrapy import Selector
 
 
 def parse_date(value: str, output_format: str = "%Y-%m-%d"):
@@ -36,36 +35,12 @@ def parse_date(value: str, output_format: str = "%Y-%m-%d"):
     return result.strftime(output_format)
 
 
-def parse_website(page_source: str, extract_patterns: dict) -> dict | None:
-
-    sel = Selector(text=page_source)
-    response_fields = ["title", "description", "raw_date", "parsed_date", "paragraphs"]
-    response = {field: None for field in response_fields}
-
-    title_pattern = extract_patterns.get("title")
-    if title_pattern:
-        title = sel.xpath(title_pattern).get()
-        if title:
-            response["title"] = title.strip()
-
-    description_pattern = extract_patterns.get("description")
-    if description_pattern:
-        description = sel.xpath(description_pattern).get()
-        if description:
-            response["description"] = description.strip()
-
-    date_pattern = extract_patterns.get("date")
-    if date_pattern:
-        raw_date = sel.xpath(date_pattern).get()
-        if raw_date:
-            raw_date = raw_date.strip()
-            parsed_date = parse_date(raw_date, output_format="%Y-%m-%d")
-            response["raw_date"] = raw_date
-            response["parsed_date"] = parsed_date
-
-    paragraphs_pattern = extract_patterns.get("paragraphs")
-    if paragraphs_pattern:
-        paragraphs = sel.xpath(paragraphs_pattern).getall()
-        if paragraphs:
-            response["paragraphs"] = paragraphs
-    return response
+def string_join(items: list, strip_items: bool = True, strip_result: bool = True):
+    if strip_items:
+        data = (x.strip() for x in items)
+    else:
+        data = (x for x in items)
+    res = " ".join(data)
+    if strip_result:
+        res = res.strip()
+    return res
