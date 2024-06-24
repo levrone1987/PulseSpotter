@@ -1,6 +1,6 @@
-from content_ingestion.data_models import SiteScraperPipelineParams
-from content_ingestion.parse_functions import parse_date, string_join
-from content_ingestion.scrapers.site_scraper import SiteScraperPipeline
+from content_ingestion.data_models import NewsScraperParams
+from content_ingestion.utils.parse_functions import parse_date, string_join
+from content_ingestion.scrapers.site_scraper import NewsSiteScraper
 
 
 if __name__ == '__main__':
@@ -57,6 +57,6 @@ if __name__ == '__main__':
         ]
     }
 
-    pipeline_params = SiteScraperPipelineParams(**params)
-    pipeline = SiteScraperPipeline(pipeline_params)
+    pipeline_params = NewsScraperParams(**params)
+    pipeline = NewsSiteScraper(pipeline_params)
     pipeline.run(max_num_pages=11, until_date="2024-06-10")

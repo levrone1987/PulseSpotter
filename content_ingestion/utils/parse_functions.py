@@ -7,10 +7,10 @@ from more_itertools import first
 def parse_date(value: str, output_format: str = "%Y-%m-%d"):
     # Regular expression to find potential date patterns
     date_patterns = [
-        r'\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b', # Dates with different delimiters: dd-mm-yyyy, mm-dd-yyyy, dd.mm.yyyy, dd/mm/yyyy
-        r'\b\d{4}[./-]\d{2}[./-]\d{2}\b',  # ISO-like dates: yyyy-mm-dd, yyyy.mm.dd, yyyy/mm/dd
-        r'\b\w+[.,\s]+\d{1,2}(?:st|nd|rd|th)?[.,\s]+\d{4}\b',  # Dates with month names and commas: March 3rd, 2023
-        r'\b\d{1,2}(?:st|nd|rd|th)?[.,\s]+\w+[.,\s]+\d{4}\b',  # Dates with month names and commas: 3rd, March 2023
+        r'\d{1,2}[./-]\d{1,2}[./-]\d{2,4}', # Dates with different delimiters: dd-mm-yyyy, mm-dd-yyyy, dd.mm.yyyy, dd/mm/yyyy
+        r'\d{4}[./-]\d{2}[./-]\d{2}',  # ISO-like dates: yyyy-mm-dd, yyyy.mm.dd, yyyy/mm/dd
+        r'\w+[.,\s]+\d{1,2}(?:st|nd|rd|th)?[.,\s]+\d{4}',  # Dates with month names and commas: March 3rd, 2023
+        r'\d{1,2}(?:st|nd|rd|th)?[.,\s]+\w+[.,\s]+\d{4}',  # Dates with month names and commas: 3rd, March 2023
     ]
 
     # Combine all patterns into a single regex pattern

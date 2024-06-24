@@ -3,8 +3,7 @@ import requests
 
 from content_ingestion.config import ZENROWS_API_KEY
 from content_ingestion.data_models import ScrapePattern
-from content_ingestion.parse_functions import string_join, parse_date
-from content_ingestion.parse_utils import parse_website
+from content_ingestion.utils.parse_utils import parse_website
 
 if __name__ == '__main__':
 

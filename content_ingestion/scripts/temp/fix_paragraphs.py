@@ -2,8 +2,7 @@ import requests
 from pymongo import MongoClient, errors
 from tqdm import tqdm
 
-from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION, ZENROWS_API_KEY
-from content_ingestion.parse_utils import parse_website, parse_date
+from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
 
 if __name__ == '__main__':
 

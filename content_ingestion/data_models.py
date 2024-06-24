@@ -32,7 +32,7 @@ class ScrapePattern(BaseModel):
 ScrapePatterns = Dict[str, ScrapePattern]
 
 
-class SiteScraperPipelineParams(BaseModel):
+class NewsScraperParams(BaseModel):
     model_config = ConfigDict(frozen=True)
     site_name: str
     base_url: str
@@ -40,18 +40,9 @@ class SiteScraperPipelineParams(BaseModel):
     site_elements_patterns: SiteElementsPatterns
     scraper_request_params: ZenrowsRequestParams
     scrape_patterns: ScrapePatterns
-    blacklisted_urls: Optional[list] = None
-    blacklisted_url_patterns: Optional[list] = None
+    blacklisted_urls: Optional[list] = []
+    blacklisted_url_patterns: Optional[list] = []
 
 
-class SiteArchiveScraperPipelineParams(BaseModel):
-    model_config = ConfigDict(frozen=True)
-    site_name: str
-    base_url: str
+class NewsArchiveScraperParams(NewsScraperParams):
     search_url_template: str
-    crawler_request_params: ZenrowsRequestParams
-    site_elements_patterns: SiteElementsPatterns
-    scraper_request_params: ZenrowsRequestParams
-    scrape_patterns: ScrapePatterns
-    blacklisted_urls: Optional[list] = None
-    blacklisted_url_patterns: Optional[list] = None

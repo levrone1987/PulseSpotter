@@ -1,7 +1,9 @@
+from abc import ABCMeta
+
 import logging
 
 
-class LoggingMeta(type):
+class LoggingMeta(ABCMeta):
     def __new__(cls, name, bases, class_dict):
         new_class = super().__new__(cls, name, bases, class_dict)
         new_class.logger = cls._setup_logger(name)

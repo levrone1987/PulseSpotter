@@ -2,7 +2,7 @@ import json
 import unittest
 
 from config import TESTS_DIR
-from content_ingestion.parse_utils import parse_date
+from content_ingestion.utils.parse_functions import parse_date
 
 
 class TestParseUtils(unittest.TestCase):
