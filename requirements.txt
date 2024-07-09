@@ -1,12 +1,9 @@
 beautifulsoup4
-langchain
-langchain-core
-langchain-community
-langchain-openai
 more-itertools
 pandas
-pymongo
-dateparser
 python-dotenv
 requests
+pymongo
+dateparser
 scrapy
+pydantic

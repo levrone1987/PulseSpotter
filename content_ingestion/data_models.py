@@ -1,6 +1,6 @@
 from typing import Optional, Callable, Dict
 
-from pydantic import BaseModel, RootModel, ConfigDict
+from pydantic import BaseModel, ConfigDict
 
 
 class ZenrowsRequestParams(BaseModel):

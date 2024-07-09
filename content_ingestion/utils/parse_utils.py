@@ -1,6 +1,6 @@
 from scrapy import Selector
 
-from content_ingestion.data_models import ScrapePattern, ScrapePatterns
+from data_models import ScrapePattern, ScrapePatterns
 
 
 def parse_pattern(selector: Selector, pattern: ScrapePattern):
@@ -8,7 +8,7 @@ def parse_pattern(selector: Selector, pattern: ScrapePattern):
         response = selector.xpath(pattern.pattern).getall()
     else:
         response = selector.xpath(pattern.pattern).get()
-    if pattern.parse_func:
+    if pattern.parse_func and response is not None:
         response = pattern.parse_func(response)
     return response
 

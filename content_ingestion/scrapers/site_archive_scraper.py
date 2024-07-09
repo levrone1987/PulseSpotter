@@ -5,10 +5,9 @@ import requests
 from pandas import date_range
 from pymongo import MongoClient, errors
 
-from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
-from content_ingestion.data_models import NewsArchiveScraperParams
-from content_ingestion.scrapers._base import NewsScraper
-from content_ingestion.utils.parse_utils import parse_website
+from data_models import NewsArchiveScraperParams
+from scrapers._base import NewsScraper
+from utils.parse_utils import parse_website
 
 
 class NewsArchiveScraper(NewsScraper):
@@ -27,14 +26,16 @@ class NewsArchiveScraper(NewsScraper):
         else:
             dates = date_range(start=start_date.strftime("%Y-%m-%d"), end=end_date.strftime("%Y-%m-%d"))
             dates = dates.strftime("%Y-%m-%d")
-            dates = sorted(dates.tolist(), reverse=True)
         start_urls = []
         for date in dates:
             year, month, day = date.split("-")
             start_urls.append(self._search_url_template.format(year=year, month=month, day=day))
+        start_urls = sorted(set(start_urls), reverse=True)
         return start_urls
 
     def _run(self, start_date: datetime.datetime, page_limit: int, end_date: datetime.datetime = None):
+        from settings import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
+
         self.logger.info(f"Starting scraper for {self._base_url}:")
         self.logger.info(f"start_date: {start_date}; end_date: {end_date}; page_limit: {page_limit}")
 
@@ -59,7 +60,6 @@ class NewsArchiveScraper(NewsScraper):
                     article_urls = self._find_article_urls(page_content)
                     date_limit_reached = False
                     self.logger.info(f"Found {len(article_urls)} articles.")
-                    break
 
                     for article_url in article_urls:
                         if not article_url.startswith(self._base_url):

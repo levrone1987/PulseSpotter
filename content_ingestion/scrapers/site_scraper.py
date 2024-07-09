@@ -6,10 +6,9 @@ import requests
 from pymongo import MongoClient, errors
 from scrapy.selector import Selector
 
-from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
-from content_ingestion.data_models import NewsScraperParams
-from content_ingestion.scrapers._base import NewsScraper
-from content_ingestion.utils.parse_utils import parse_website
+from data_models import NewsScraperParams
+from scrapers._base import NewsScraper
+from utils.parse_utils import parse_website
 
 
 class NewsSiteScraper(NewsScraper):
@@ -31,6 +30,8 @@ class NewsSiteScraper(NewsScraper):
         return found_urls
 
     def _run(self, end_date: datetime.datetime, page_limit: int):
+        from settings import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
+
         crawl_req_params = self._crawler_request_params.model_dump(exclude_unset=True)
         scrape_req_params = self._scraper_request_params.model_dump(exclude_unset=True)
         try:

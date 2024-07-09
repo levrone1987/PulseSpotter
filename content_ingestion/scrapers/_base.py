@@ -5,10 +5,10 @@ from urllib.parse import urljoin
 
 import requests
 from scrapy import Selector
+from tenacity import retry, stop_after_attempt, wait_exponential
 
-from content_ingestion.config import ZENROWS_API_KEY
-from content_ingestion.data_models import NewsScraperParams
-from content_ingestion.logging import LoggingMeta
+from data_models import NewsScraperParams
+from logger import LoggingMeta
 
 
 class NewsScraper(ABC, metaclass=LoggingMeta):
@@ -18,7 +18,10 @@ class NewsScraper(ABC, metaclass=LoggingMeta):
         pass
 
     @staticmethod
+    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=4, max=10))
     def get_page_source(url: str, zenrows_request_params: dict):
+        from settings import ZENROWS_API_KEY
+
         params = {"url": url, "apikey": ZENROWS_API_KEY, **zenrows_request_params}
         response = requests.get("https://api.zenrows.com/v1/", params=params)
         response.raise_for_status()
