@@ -2,19 +2,19 @@ import requests
 from pymongo import MongoClient, errors
 from tqdm import tqdm
 
-from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
+from content_ingestion.config import MONGO_HOST, MONGO_DATABASE, DOCS_COLLECTION
 
 if __name__ == '__main__':
 
     try:
         with MongoClient(MONGO_HOST) as mongo_client:
             db = mongo_client[MONGO_DATABASE]
-            collection = db[MONGO_COLLECTION]
+            docs_collection = db[DOCS_COLLECTION]
 
             # query = {"site_name": "handelsblatt", "paragraphs": {"$exists": False}}
             query = {"site_name": "handelsblatt", "full_text": {"$exists": True}}
-            cursor = collection.find(query)
-            num_docs = collection.count_documents(query)
+            cursor = docs_collection.find(query)
+            num_docs = docs_collection.count_documents(query)
             pbar = tqdm(total=num_docs)
 
             for doc in cursor:
@@ -23,7 +23,7 @@ if __name__ == '__main__':
                 # paragraphs = full_text.split(".")
                 # paragraphs = [p + "." for p in paragraphs]
 
-                collection.update_one(
+                docs_collection.update_one(
                     filter={"_id": doc["_id"]},
                     update={
                         # "$set": {"paragraphs": paragraphs},

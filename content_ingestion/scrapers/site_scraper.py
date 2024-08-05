@@ -30,7 +30,7 @@ class NewsSiteScraper(NewsScraper):
         return found_urls
 
     def _run(self, end_date: datetime.datetime, page_limit: int):
-        from settings import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
+        from settings import MONGO_HOST, MONGO_DATABASE, DOCS_COLLECTION
 
         crawl_req_params = self._crawler_request_params.model_dump(exclude_unset=True)
         scrape_req_params = self._scraper_request_params.model_dump(exclude_unset=True)
@@ -42,7 +42,7 @@ class NewsSiteScraper(NewsScraper):
 
             with MongoClient(MONGO_HOST) as mongo_client:
                 db = mongo_client[MONGO_DATABASE]
-                collection = db[MONGO_COLLECTION]
+                collection = db[DOCS_COLLECTION]
 
                 while len(start_urls) > 0:
                     self.logger.info(f"{len(start_urls)} urls left to crawl ...")

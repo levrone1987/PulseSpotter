@@ -34,7 +34,7 @@ class NewsArchiveScraper(NewsScraper):
         return start_urls
 
     def _run(self, start_date: datetime.datetime, page_limit: int, end_date: datetime.datetime = None):
-        from settings import MONGO_HOST, MONGO_DATABASE, MONGO_COLLECTION
+        from settings import MONGO_HOST, MONGO_DATABASE, DOCS_COLLECTION
 
         self.logger.info(f"Starting scraper for {self._base_url}:")
         self.logger.info(f"start_date: {start_date}; end_date: {end_date}; page_limit: {page_limit}")
@@ -46,7 +46,7 @@ class NewsArchiveScraper(NewsScraper):
 
             with MongoClient(MONGO_HOST) as mongo_client:
                 db = mongo_client[MONGO_DATABASE]
-                collection = db[MONGO_COLLECTION]
+                collection = db[DOCS_COLLECTION]
 
                 while len(start_urls) > 0:
                     self.logger.info(f"{len(start_urls)} urls left to crawl ...")

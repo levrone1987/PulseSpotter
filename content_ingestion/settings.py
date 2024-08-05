@@ -12,7 +12,7 @@ load_dotenv(ROOT_DIR.joinpath(".env"))
 
 MONGO_HOST = os.getenv('MONGO_HOST')
 MONGO_DATABASE = 'insightfinder-dev'
-MONGO_COLLECTION = 'content'
+DOCS_COLLECTION = 'documents'
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 ZENROWS_API_KEY = os.getenv('ZENROWS_API_KEY')
 
