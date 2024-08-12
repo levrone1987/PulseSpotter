@@ -1,0 +1,11 @@
+more-itertools
+pandas
+pymongo==4.7.2
+dateparser==1.2.0
+python-dotenv
+requests
+scrapy==2.11.1
+pydantic==2.7.1
+tenacity
+apache-airflow==2.9.2
+psycopg2-binary
