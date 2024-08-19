@@ -1,0 +1,25 @@
+# File: docker/app/Dockerfile.frontend
+
+# Use the official Python image from the Docker Hub
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy relevant files and folders
+RUN mkdir -p pulsespotter
+COPY ./pulsespotter/frontend ./pulsespotter/frontend
+COPY ./pulsespotter/__init__.py ./pulsespotter/
+COPY ./pulsespotter/config.py ./pulsespotter/
+COPY ./docker/app/requirements-frontend.txt ./requirements.txt
+
+# Install the dependencies
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+# Make port 8501 available to the world outside this container
+EXPOSE 8501
+
+ENV PYTHONPATH=/app
+
+# Run the application
+CMD ["streamlit", "run", "pulsespotter/frontend/app.py", "--server.port=8501", "--server.enableCORS=false"]

@@ -1,0 +1,30 @@
+# docker/app/docker-compose.yaml
+
+version: "3.10"
+
+services:
+  backend:
+    build:
+      context: ../..
+      dockerfile: docker/app/Dockerfile.api
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    environment:
+      - MONGO_HOST=mongodb+srv://altmalekc:sRN2oby3ZtiA0bHL@cluster-v1.gihuvyk.mongodb.net/
+      - ENVIRONMENT=development
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: docker/app/Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+

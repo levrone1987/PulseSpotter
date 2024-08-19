@@ -1,9 +1,0 @@
-beautifulsoup4
-more-itertools
-pandas
-python-dotenv
-requests
-pymongo
-dateparser
-scrapy
-pydantic

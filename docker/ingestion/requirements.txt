@@ -1,0 +1,10 @@
+beautifulsoup4
+more-itertools
+pandas
+requests
+pymongo
+dateparser
+scrapy
+pydantic
+tenacity
+cryptography==42.0.8

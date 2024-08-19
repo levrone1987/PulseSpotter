@@ -18,14 +18,17 @@ class BaseRepository(ABC):
     def query(
             self,
             q: Dict,
-            projection: Dict = None,
+            projection: Dict | List = None,
             sort_order: List = None,
             limit: int = None,
     ) -> List[Dict]:
         collection = self.collection
-        articles = collection.find(q or {}, projection=projection or {})
+        documents = collection.find(q or {}, projection=projection or {})
         if sort_order:
-            articles = articles.sort(sort_order)
+            documents = documents.sort(sort_order)
         if limit:
-            articles = articles.limit(limit)
-        return list(articles)
+            documents = documents.limit(limit)
+        documents = list(documents)
+        for document in documents:
+            document["_id"] = str(document.pop("_id"))
+        return documents

@@ -1,6 +1,21 @@
 
 ## Running with Docker
 
+### Application
+The application consists of:
+- A FastAPI server which serves as a backend for the application.
+- A Streamlit application serving as a frontend of the system.
+
+#### Running with Docker
+Navigate to the `docker/app` directory in your terminal. Then run the following command:
+```bash
+docker-compose up --build
+```
+This will build both the backend and the frontend of the application.
+
+- You can start using the application by simply visiting `http://localhost:8501`.
+- You can check out the API docs by visiting: `http://localhost:8000/docs`.
+
 ### Ingestion
 The ingestion process is a process of crawling news websites for news articles and then scraping each article for relevant content.
 This includes the article title, description, date and paragraphs. The parsed content then gets persistently stored into our database.
@@ -8,7 +23,7 @@ This includes the article title, description, date and paragraphs. The parsed co
 #### Creating the Docker image
 Execute the following command from the project's root directory:
 ```bash
-docker build -f docker/Dockerfile.ingestion -t ingestion-service .
+docker build -f docker/ingestion/Dockerfile -t ingestion-service .
 ```
 
 #### Example running the container

@@ -1,0 +1,26 @@
+# File: docker/app/Dockerfile.api
+
+# Use the official Python image from the Docker Hub
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy relevant files and folders
+RUN mkdir -p pulsespotter
+COPY ./pulsespotter/api ./pulsespotter/api
+COPY ./pulsespotter/db ./pulsespotter/db
+COPY ./pulsespotter/utils ./pulsespotter/utils
+COPY ./pulsespotter/ingestion/utils ./pulsespotter/ingestion/utils
+COPY ./pulsespotter/__init__.py ./pulsespotter/
+COPY ./pulsespotter/config.py ./pulsespotter/
+COPY ./docker/app/requirements-api.txt ./requirements.txt
+
+# Install the dependencies
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Run the application with uvicorn
+CMD ["uvicorn", "pulsespotter.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

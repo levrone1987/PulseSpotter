@@ -1,0 +1,68 @@
+2024-08-12 14:26:16,869 - __main__ - INFO - Environment vars:
+2024-08-12 14:26:16,869 - __main__ - INFO - PROJECT_DIR=PosixPath('/app/pulsespotter')
+2024-08-12 14:26:16,869 - __main__ - INFO - MONGO_HOST='mongodb+srv://altmalekc:sRN2oby3ZtiA0bHL@cluster-v1.gihuvyk.mongodb.net/'
+2024-08-12 14:26:16,869 - __main__ - INFO - DEV_DATABASE='insightfinder-dev'
+2024-08-12 14:26:16,869 - __main__ - INFO - OPENAI_API_KEY=None
+2024-08-12 14:26:16,869 - __main__ - INFO - ZENROWS_API_KEY='9fc3e2b3074cb4c1fabf3f7ccf7e6fd053023637'
+2024-08-12 14:26:16,869 - __main__ - INFO - ENVIRONMENT='development'
+2024-08-12 14:26:16,869 - __main__ - INFO - --------------------------------------------------
+2024-08-12 14:26:16,869 - __main__ - INFO - Initialising script with following parameters:
+2024-08-12 14:26:16,870 - __main__ - INFO - Start Date: 2024-08-12 00:00:00
+2024-08-12 14:26:16,870 - __main__ - INFO - End Date: 2024-08-12 00:00:00
+2024-08-12 14:26:16,870 - __main__ - INFO - Site Name: handelsblatt
+2024-08-12 14:26:16,870 - __main__ - INFO - Page Limit: 15
+2024-08-12 14:26:16,870 - __main__ - INFO - --------------------------------------------------
+2024-08-12 14:26:16,870 - __main__ - INFO - Process started ...
+2024-08-12 14:26:16,870 - NewsArchiveScraper - INFO - Starting scraper for https://www.handelsblatt.com:
+2024-08-12 14:26:16,870 - NewsArchiveScraper - INFO - start_date: 2024-08-12 00:00:00; end_date: 2024-08-12 00:00:00; page_limit: 15
+2024-08-12 14:26:16,932 - NewsArchiveScraper - INFO - 1 urls left to crawl ...
+2024-08-12 14:26:25,772 - NewsArchiveScraper - INFO - Crawling https://www.handelsblatt.com/archiv/?date=2024-08-12 ...
+2024-08-12 14:26:25,784 - NewsArchiveScraper - INFO - Found 82 articles.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/app/pulsespotter/ingestion/scripts/content_ingestion.py", line 72, in <module>
+    scraper.run_between(args.start_date, args.end_date, args.page_limit)
+  File "/app/pulsespotter/ingestion/scrapers/site_archive_scraper.py", line 86, in run_between
+    self._run(start_date=start_date, end_date=end_date, page_limit=page_limit)
+  File "/app/pulsespotter/ingestion/scrapers/site_archive_scraper.py", line 62, in _run
+    if not articles_repository.get_article_by_url(article_url) and self._should_scrape_article(article_url):
+  File "/app/pulsespotter/db/repositories/articles.py", line 51, in get_article_by_url
+    article = self._collection.find_one({"url": url})
+  File "/usr/local/lib/python3.10/site-packages/pymongo/collection.py", line 1495, in find_one
+    for result in cursor.limit(-1):
+  File "/usr/local/lib/python3.10/site-packages/pymongo/cursor.py", line 1243, in next
+    if len(self.__data) or self._refresh():
+  File "/usr/local/lib/python3.10/site-packages/pymongo/cursor.py", line 1160, in _refresh
+    self.__send_message(q)
+  File "/usr/local/lib/python3.10/site-packages/pymongo/cursor.py", line 1039, in __send_message
+    response = client._run_operation(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/_csot.py", line 108, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 1431, in _run_operation
+    return self._retryable_read(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 1540, in _retryable_read
+    return self._retry_internal(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/_csot.py", line 108, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 1507, in _retry_internal
+    ).run()
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 2353, in run
+    return self._read() if self._is_read else self._write()
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 2483, in _read
+    self._server = self._get_server()
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 2439, in _get_server
+    return self._client._select_server(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py", line 1322, in _select_server
+    server = topology.select_server(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/topology.py", line 368, in select_server
+    server = self._select_server(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/topology.py", line 346, in _select_server
+    servers = self.select_servers(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/topology.py", line 253, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "/usr/local/lib/python3.10/site-packages/pymongo/topology.py", line 303, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: SSL handshake failed: ac-4hwfcl1-shard-00-01.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms),SSL handshake failed: ac-4hwfcl1-shard-00-00.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms),SSL handshake failed: ac-4hwfcl1-shard-00-02.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 66ba1b88509b90f0487e0eda, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-4hwfcl1-shard-00-00.gihuvyk.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect("SSL handshake failed: ac-4hwfcl1-shard-00-00.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)")>, <ServerDescription ('ac-4hwfcl1-shard-00-01.gihuvyk.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect("SSL handshake failed: ac-4hwfcl1-shard-00-01.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)")>, <ServerDescription ('ac-4hwfcl1-shard-00-02.gihuvyk.mongodb.net', 27017) server_type: Unknown, rtt: None, error=AutoReconnect("SSL handshake failed: ac-4hwfcl1-shard-00-02.gihuvyk.mongodb.net:27017: [('SSL routines', '', 'tlsv1 alert internal error')] (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)")>]>

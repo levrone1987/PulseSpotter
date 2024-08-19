@@ -1,5 +1,6 @@
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
+import pymongo
 from bson import ObjectId
 from pymongo.collection import Collection
 
@@ -52,6 +53,34 @@ class ArticlesRepository(BaseRepository):
         if article:
             article["_id"] = str(article["_id"])
         return article
+
+    def search_articles(
+            self,
+            phrase: str = None,
+            site_name: str = None,
+            start_date: str = None,
+            end_date: str = None,
+            limit: int = None,
+            projection: List | Dict = None,
+            sort: bool = False,
+    ):
+        q = {}
+        if start_date:
+            q["parsed_date"] = {"$gte": start_date}
+        if end_date:
+            q["parsed_date"] = {"$lte": end_date, **q.get("parsed_date", {})}
+        if site_name:
+            q["site_name"] = {"$eq": site_name}
+        if phrase:
+            q["$or"] = [
+                {"title": {"$regex": phrase, "$options": "i"}},
+                {"description": {"$regex": phrase, "$options": "i"}},
+                {"paragraphs": {"$elemMatch": {"$regex": phrase, "$options": "i"}}}
+            ]
+        params = dict(q=q, limit=limit, projection=projection)
+        if sort:
+            params["sort_order"] = [("parsed_date", pymongo.DESCENDING), ("raw_date", pymongo.DESCENDING)]
+        return self.query(**params)
 
     def update_article(self, article_id: str, updates: Dict) -> bool:
         result = self._collection.update_one({"_id": ObjectId(article_id)}, {"$set": updates})
