@@ -24,8 +24,8 @@ RUN chmod +x /app/entrypoint.sh
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV MONGO_HOST=Your_Mongo_Key
-ENV ZENROWS_API_KEY=Your_Zenrows_Key
+# ENV MONGO_HOST=<MONGO_HOST>
+# ENV ZENROWS_API_KEY=<ZENROWS_API_KEY>
 ENV ENVIRONMENT=development
 
 # Specify the command to run the ingestion process
