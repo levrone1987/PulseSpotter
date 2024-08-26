@@ -12,8 +12,11 @@ services:
     networks:
       - app-network
     environment:
-      - MONGO_HOST=mongodb+srv://altmalekc:sRN2oby3ZtiA0bHL@cluster-v1.gihuvyk.mongodb.net/
-      - ENVIRONMENT=development
+      - MONGO_HOST=
+      - MONGO_DATABASE=
+      - QDRANT_HOST=
+      - QDRANT_API_KEY=
+      - API_BASE_URL=
 
   frontend:
     build:

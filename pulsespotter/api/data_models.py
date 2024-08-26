@@ -25,18 +25,6 @@ class ArticleSearchRequest(BaseModel):
         return validate_date(value)
 
 
-class SimilaritySearchRequest(BaseModel):
-    article_id: str
-    start_date: Optional[str] = None
-    end_date: Optional[str] = None
-    limit: int = 5
-    min_similarity: float = 0.9
-
-    @field_validator("start_date", "end_date", mode="before")
-    def validate_date_format(cls, value):
-        return validate_date(value)
-
-
 def validate_date(date_string: str, date_format: str = "%Y-%m-%d") -> str:
     try:
         datetime.strptime(date_string, date_format)

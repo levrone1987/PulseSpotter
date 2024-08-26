@@ -45,10 +45,9 @@ if __name__ == '__main__':
     logger.info("Environment vars:")
     logger.info(f"{PROJECT_DIR=}")
     logger.info(f"{MONGO_HOST=}")
-    logger.info(f"{DEV_DATABASE=}")
+    logger.info(f"{MONGO_DATABASE=}")
     logger.info(f"{OPENAI_API_KEY=}")
     logger.info(f"{ZENROWS_API_KEY=}")
-    logger.info(f"{ENVIRONMENT=}")
     logger.info(50 * "-")
 
     logger.info("Initialising script with following parameters:")

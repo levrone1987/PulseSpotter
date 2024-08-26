@@ -1,70 +1,75 @@
+from typing import Dict, Optional
+from urllib.parse import urljoin
+
 import streamlit as st
 import requests
 import plotly.express as px
 from datetime import datetime, timedelta
 
+from pulsespotter.config import API_BASE_URL
+from pulsespotter.frontend.components import get_topic_summary_card
+from pulsespotter.frontend.styles import summary_card
 from pulsespotter.frontend.utils import generate_weeks
 
-st.title("Trending Topics")
 
-# extract query parameters
-today = datetime.now()
-start_date = st.query_params.get("start_date") or today.strftime("%Y-%m-%d")
-end_date = st.query_params.get("end_date") or today.strftime("%Y-%m-%d")
+def get_trending_topics(start_date: str, end_date: str) -> Optional[Dict]:
+    payload = {"start_date": start_date, "end_date": end_date}
+    trending_topics_endpoint = urljoin(API_BASE_URL, f"topics/trending")
+    try:
+        response = requests.post(trending_topics_endpoint, json=payload)
+        if response.status_code == 200:
+            response = response.json()
+            return response
+    except:
+        return None
 
-# display week picker
-week_ranges = generate_weeks(today - timedelta(weeks=12), today)
-selected_week = None
-selected_index = -1
 
-if start_date and end_date:
-    selected_week = (start_date, end_date)
-    if selected_week in week_ranges:
-        selected_index = week_ranges.index(selected_week)
-
-selected_week = st.selectbox(
-    label="Select week",
-    options=[f"{sd} - {ed}" for sd, ed in week_ranges],
-    index=selected_index if selected_index > -1 else 0
-)
-start_date, end_date = selected_week.split(" - ")
-
-# retrieve trending topics
-payload = {"start_date": start_date, "end_date": end_date}
-# todo: refactor such that we have a global variable containing the backend URL
-trending_topics_endpoint = "http://backend:8000/api/topics/trending"
-response = requests.post(trending_topics_endpoint, json=payload)
-
-if response.status_code != 200:
-    st.error(f"Failed to retrieve topics. Error: {response.status_code}")
-
-# Display the topics in a table format
-topics = response.json()
-st.write("### Trending Topics")
-if topics:
-    # Extract labels and sizes for the pie chart
-    labels = [topic['topic_label'] for topic in topics]
-    sizes = [topic['num_articles'] for topic in topics]
-
-    # Create a pie chart using Plotly
-    fig = px.pie(
-        names=labels,
-        values=sizes,
-        title='Overview',
-        hole=0.1,
+def create_trending_topics_pie_chart(trending_topics_data: Dict):
+    return px.pie(
+        names=[topic['topic_label'] for topic in trending_topics_data],
+        values=[topic['num_articles'] for topic in trending_topics_data],
+        hole=0.2,
     )
-    st.plotly_chart(fig)
 
-    # Display topic data and links
-    for topic in topics:
-        refer_link = (
-            f"/topic_info?topic_id={topic['topic_id']}"
-            f"&start_date={start_date}&end_date={end_date}"
-        )
-        topic_label = topic['topic_label']
-        st.markdown(f'<a href="{refer_link}" target="_self"><b>Topic Label: {topic_label}</b></a>',
-                    unsafe_allow_html=True)
-        st.write(f"**Number of Articles**: {topic['num_articles']}")
-        st.write("---")
-else:
-    st.write("No trending topics found for the given date range.")
+
+if __name__ == "__main__":
+
+    st.title("Trending Topics")
+
+    # load required styles
+    st.markdown(summary_card, unsafe_allow_html=True)
+
+    # extract query parameters
+    today = datetime.now()
+    start_date = st.query_params.get("start_date") or today.strftime("%Y-%m-%d")
+    end_date = st.query_params.get("end_date") or today.strftime("%Y-%m-%d")
+
+    # display week picker
+    week_ranges = generate_weeks(today - timedelta(weeks=12), today)
+    selected_week = None
+    selected_index = -1
+    if start_date and end_date:
+        selected_week = (start_date, end_date)
+        if selected_week in week_ranges:
+            selected_index = week_ranges.index(selected_week)
+
+    selected_week = st.selectbox(
+        label="Select week",
+        options=[f"{sd} - {ed}" for sd, ed in week_ranges],
+        index=selected_index if selected_index > -1 else 0
+    )
+    start_date, end_date = selected_week.split(" - ")
+
+    # retrieve trending topics
+    trending_topics_data = get_trending_topics(start_date, end_date)
+    if trending_topics_data:
+        st.header("Overview")
+        st.plotly_chart(create_trending_topics_pie_chart(trending_topics_data))
+
+        # Display topic data and links
+        for topic_data in trending_topics_data:
+            topic_data_ = {**topic_data, "topic_start_date": start_date, "topic_end_date": end_date}
+            with st.container():
+                st.write(get_topic_summary_card(topic_data_), unsafe_allow_html=True)
+    else:
+        st.write("No trending topics found for the given date range.")

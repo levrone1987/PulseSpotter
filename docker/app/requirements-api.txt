@@ -4,3 +4,4 @@ pymongo
 more-itertools
 dateparser
 numpy
+qdrant-client

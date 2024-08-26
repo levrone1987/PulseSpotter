@@ -10,8 +10,8 @@ from pulsespotter.ingestion.utils.parse_functions import parse_date
 
 
 class ArticlesRepository(BaseRepository):
-    def __init__(self, environment: str = "development"):
-        super().__init__(environment)
+    def __init__(self):
+        super().__init__()
         self._collection = self._db[ARTICLES_COLLECTION]
 
     @property
@@ -29,7 +29,7 @@ class ArticlesRepository(BaseRepository):
             paragraphs: list | str = None,
             visited: bool = True,
     ):
-        if not parsed_date:
+        if raw_date and not parsed_date:
             parsed_date = parse_date(raw_date)
         return self._collection.insert_one({
             "url": url,

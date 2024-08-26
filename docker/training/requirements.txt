@@ -1,0 +1,10 @@
+more-itertools
+numpy
+pandas
+pymongo
+qdrant-client
+scikit-learn
+sentence-transformers
+torch
+torchinfo
+tqdm

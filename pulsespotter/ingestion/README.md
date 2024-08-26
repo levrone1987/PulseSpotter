@@ -1,5 +1,5 @@
 ## Description
 
 # TODOs
-- Migrate ingestion scripts into the `pulsespotter.ingestion` package.
-- Implement a script (bash or python) that executes full daily ingestion pipeline for each site on separate processes with each outputting into a separate log file.
+- Implementing embeddings calculation process to run as part of the content ingestion process
+- Implementing topics calculation as part of the content ingestion process

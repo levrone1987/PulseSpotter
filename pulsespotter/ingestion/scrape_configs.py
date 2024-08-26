@@ -1,4 +1,3 @@
-from pulsespotter.config import PROJECT_DIR
 from pulsespotter.ingestion.utils.parse_functions import parse_date, string_join
 from pulsespotter.ingestion.scrapers.site_archive_scraper import NewsArchiveScraper
 from pulsespotter.ingestion.scrapers.site_scraper import NewsSiteScraper
@@ -12,8 +11,8 @@ SCRAPE_CONFIGS = {
         "search_url_template": "https://www.spiegel.de/nachrichtenarchiv/artikel-{day}.{month}.{year}.html",
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
+            "premium_proxy": "true",
+            "proxy_country": "de",
             "js_render": "true",
         },
         "site_elements_patterns": {
@@ -22,8 +21,8 @@ SCRAPE_CONFIGS = {
             ),
         },
         "scraper_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
+            "premium_proxy": "true",
+            "proxy_country": "de",
             "js_render": "true",
             # "js_instructions": (
             #     """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]"""
@@ -301,7 +300,7 @@ SCRAPE_CONFIGS = {
             },
         },
         "blacklisted_urls": [],
-        "blacklisted_url_patterns": ["kultur/fka-twigs-will-einen-ki-klon-gute-idee-schon-jetzt-klingen-die-meisten-kunstler-wie-maschinen-11621471.html"]
+        "blacklisted_url_patterns": ["www.tagesspiegel.de/test/"]
     },
     "heise": {
         "site_name": "heise",
@@ -310,8 +309,8 @@ SCRAPE_CONFIGS = {
         "search_url_template": "https://www.heise.de/newsticker/archiv/{year}/{month}",
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
+            "premium_proxy": "true",
+            "proxy_country": "de",
             "js_render": "true",
         },
         "site_elements_patterns": {
@@ -321,8 +320,8 @@ SCRAPE_CONFIGS = {
             ),
         },
         "scraper_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
+            "premium_proxy": "true",
+            "proxy_country": "de",
             "js_render": "true",
             # "js_instructions": (
             #     """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]"""
