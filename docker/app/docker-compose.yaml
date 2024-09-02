@@ -16,7 +16,7 @@ services:
       - MONGO_DATABASE=
       - QDRANT_HOST=
       - QDRANT_API_KEY=
-      - API_BASE_URL=
+      - MODEL_FILENAME=
 
   frontend:
     build:
@@ -26,6 +26,8 @@ services:
       - "8501:8501"
     networks:
       - app-network
+    environment:
+      - API_BASE_URL=http://backend:8000/api/
 
 networks:
   app-network:

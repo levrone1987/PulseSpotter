@@ -80,8 +80,10 @@ class TopicAssignmentsRepository(BaseRepository):
             (str(topic["topic_id"]), topic["topic_label"]) for topic in topic_assignments
         ]
         topic_counts = Counter(topic_ids)
-        top_pct = 0.1
-        trending_topics_counts = topic_counts.most_common(int(len(topic_counts) * top_pct))
+        top_pct = 0.25
+        topk = 10
+        num_topics = min(topk, int(len(topic_counts) * top_pct))
+        trending_topics_counts = topic_counts.most_common(num_topics)
         return [
             {
                 "topic_id": topic_id,

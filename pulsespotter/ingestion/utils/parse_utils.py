@@ -4,6 +4,8 @@ from pulsespotter.ingestion.utils.data_models import ScrapePattern, ScrapePatter
 
 
 def parse_pattern(selector: Selector, pattern: ScrapePattern):
+    if not pattern.pattern:
+        return
     if pattern.extract_all:
         response = selector.xpath(pattern.pattern).getall()
     else:

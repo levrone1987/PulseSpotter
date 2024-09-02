@@ -39,7 +39,6 @@ def get_articles_and_embeddings(start_date: str, end_date: str):
     articles_vectors_repository = get_articles_vectors_repository()
     article_ids = [article["_id"] for article in articles]
     articles_vectors_response = articles_vectors_repository.batch_get(article_ids)
-    article_ids = [x["_id"] for x in articles_vectors_response]
     vector_ids = [x["vector_id"] for x in articles_vectors_response]
     # retrieve embeddings of each article
     article_embeddings_repository = get_article_embeddings_repository()
@@ -70,10 +69,10 @@ def extract_article_content(article: dict):
 
 def build_topic_model() -> BERTopic:
     # components of the BERTopic algorithm
-    umap_model = UMAP(n_neighbors=10, n_components=3, min_dist=0.0, metric="cosine")
-    hdbscan_model = HDBSCAN(min_cluster_size=10, min_samples=2)
+    umap_model = UMAP(n_neighbors=3, n_components=3, min_dist=0.0, metric="cosine")
+    hdbscan_model = HDBSCAN(min_cluster_size=3, min_samples=1)
     ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, reduce_frequent_words=True)
-    vectorizer_model = CountVectorizer(min_df=10, ngram_range=(1, 3))
+    vectorizer_model = CountVectorizer(min_df=1, ngram_range=(1, 3))
     return BERTopic(
         umap_model=umap_model,
         hdbscan_model=hdbscan_model,
@@ -112,6 +111,8 @@ if __name__ == '__main__':
     logger.info(f"{MONGO_HOST=}")
     logger.info(f"{MONGO_DATABASE=}")
     logger.info(f"{OPENAI_API_KEY=}")
+    logger.info(f"{QDRANT_HOST=}")
+    logger.info(f"{QDRANT_API_KEY=}")
     logger.info(50 * "-")
 
     logger.info("Initialising script with following parameters:")

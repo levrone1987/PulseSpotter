@@ -24,7 +24,8 @@ if [[ -z "$start_date" || -z "$end_date" || -z "$page_limit" ]]; then
 fi
 
 # List of site names
-site_names=("handelsblatt" "tagesschau" "heise" "tagesspiegel" "spiegel")
+#site_names=("handelsblatt" "tagesschau" "heise" "tagesspiegel" "spiegel")
+site_names=("presseportal" "rheinischepost" "duisburg-de" "lokalklick" "lokalkompass")
 
 # Create logs directory with today's date
 today=$(date +%Y-%m-%d)

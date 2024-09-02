@@ -8,10 +8,16 @@ def get_topic_summary_card(topic_data: Dict) -> str:
         f"/topic_info?topic_id={topic_data['topic_id']}"
         f"&start_date={topic_data['topic_start_date']}&end_date={topic_data['topic_end_date']}"
     )
+    # present topic trends exist
+    score_component = "<span></span>"
+    score = topic_data.get("probability")
+    if score:
+        score_component = f"<span><strong>Trending Score:</strong> {score:.4f}</span><br/>"
     return f"""
     <div class="summary_card">
         <h5>{topic_data['topic_label']}</h5>
         <strong>Number of articles:</strong> {topic_data['num_articles']}<br/>
+        {score_component}
         <span><a href="{refer_link}" target="_self">See more</a></span>
     </div>
     """
@@ -46,12 +52,12 @@ def get_article_summary_card(article_summary: dict, max_content_length: int = 50
     article_title = safe_get_article_field(article_summary, "title")
     article_description = safe_get_article_field(article_summary, "description")
     article_content = safe_get_article_field(article_summary, "paragraphs")
-    article_content_truncated = truncate_text_content(article_content.split("\n\n")[0], max_len=max_content_length)
+    article_content_truncated = truncate_text_content(article_content, max_len=max_content_length)
     # present score if exists
     score_component = "<span></span>"
     score = article_summary.get("score")
     if score:
-        score_component = f"<span><strong>Score:</strong> {score:.4f}</span><br/>" if score else ""
+        score_component = f"<span><strong>Score:</strong> {score:.4f}</span><br/>"
     return f"""
     <div class="summary_card">
         <h4>{(article_title.upper() or "N/A")}</h4>

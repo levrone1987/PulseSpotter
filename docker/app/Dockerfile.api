@@ -14,7 +14,11 @@ COPY ./pulsespotter/utils ./pulsespotter/utils
 COPY ./pulsespotter/ingestion/utils ./pulsespotter/ingestion/utils
 COPY ./pulsespotter/__init__.py ./pulsespotter/
 COPY ./pulsespotter/config.py ./pulsespotter/
+COPY ./pulsespotter/training/utils ./pulsespotter/training/utils
 COPY ./docker/app/requirements-api.txt ./requirements.txt
+
+# Copy resource files
+COPY ./pulsespotter/resources/model.pt ./pulsespotter/resources/model.pt
 
 # Install the dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt

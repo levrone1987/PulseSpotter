@@ -146,10 +146,10 @@ if __name__ == '__main__':
     logger.info(summary(model))
 
     # training parameters
-    train_batch_size = 16
+    train_batch_size = 8
     val_batch_size = 16
     num_epochs = 200
-    learning_rate = 5e-5
+    learning_rate = 2e-5
     weight_decay = 1e-3
     log_every = 10
 

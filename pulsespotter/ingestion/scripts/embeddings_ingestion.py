@@ -129,6 +129,8 @@ if __name__ == '__main__':
     logger.info(f"{MONGO_HOST=}")
     logger.info(f"{MONGO_DATABASE=}")
     logger.info(f"{OPENAI_API_KEY=}")
+    logger.info(f"{QDRANT_HOST=}")
+    logger.info(f"{QDRANT_API_KEY=}")
     logger.info(50 * "-")
 
     logger.info("Initialising script with following parameters:")

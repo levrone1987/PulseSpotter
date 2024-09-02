@@ -15,6 +15,7 @@ ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY")
 QDRANT_HOST = os.getenv("QDRANT_HOST")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 API_BASE_URL = os.getenv("API_BASE_URL")
+MODEL_FILENAME = os.getenv("MODEL_FILENAME")
 
 __all__ = [
     "PROJECT_DIR",
@@ -26,4 +27,5 @@ __all__ = [
     "QDRANT_HOST",
     "QDRANT_API_KEY",
     "API_BASE_URL",
+    "MODEL_FILENAME",
 ]

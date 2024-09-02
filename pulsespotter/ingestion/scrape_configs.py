@@ -6,14 +6,17 @@ from pulsespotter.ingestion.scrapers.site_scraper import NewsSiteScraper
 SCRAPE_CONFIGS = {
     "spiegel": {
         "site_name": "spiegel",
-        "enabled": True,
+        "enabled": False,
         "base_url": "https://www.spiegel.de",
-        "search_url_template": "https://www.spiegel.de/nachrichtenarchiv/artikel-{day}.{month}.{year}.html",
+        "search_url_templates": [
+            "https://www.spiegel.de/nachrichtenarchiv/artikel-{day}.{month}.{year}.html"
+        ],
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
             "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"section.article-teaser-list"}]"""
         },
         "site_elements_patterns": {
             "articles_pattern": (
@@ -24,9 +27,7 @@ SCRAPE_CONFIGS = {
             "premium_proxy": "true",
             "proxy_country": "de",
             "js_render": "true",
-            # "js_instructions": (
-            #     """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]"""
-            # ),
+            "js_instructions": """[{"wait":500},{"wait_for":"main#Inhalt"}]""",
         },
         "scrape_patterns": {
             "title": {
@@ -61,9 +62,11 @@ SCRAPE_CONFIGS = {
     },
     "handelsblatt": {
         "site_name": "handelsblatt",
-        "enabled": True,
+        "enabled": False,
         "base_url": "https://www.handelsblatt.com",
-        "search_url_template": "https://www.handelsblatt.com/archiv/?date={year}-{month}-{day}",
+        "search_url_templates": [
+            "https://www.handelsblatt.com/archiv/?date={year}-{month}-{day}"
+        ],
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
             "premium_proxy": "true",
@@ -104,14 +107,15 @@ SCRAPE_CONFIGS = {
     },
     "tagesschau": {
         "site_name": "tagesschau",
-        "enabled": True,
+        "enabled": False,
         "base_url": "https://www.tagesschau.de",
-        "search_url_template": "https://www.tagesschau.de/archiv?datum={year}-{month}-{day}",
+        "search_url_templates": [
+            "https://www.tagesschau.de/archiv?datum={year}-{month}-{day}"
+        ],
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
             "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div.teaser-right"}]""",
         },
         "site_elements_patterns": {
             "articles_pattern": (
@@ -122,10 +126,8 @@ SCRAPE_CONFIGS = {
             ),
         },
         "scraper_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
             "js_render": "true",
-            # "js_instructions": """[{"wait_for":".content-wrapper"}]""",
+            "js_instructions": """[{"wait_for":"main.content-wrapper"}]""",
         },
         "scrape_patterns": {
             "title": {
@@ -172,7 +174,6 @@ SCRAPE_CONFIGS = {
         "crawler_request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
-            # "js_render": "true",
         },
         "site_elements_patterns": {
             "topics_urls_pattern": (
@@ -194,14 +195,12 @@ SCRAPE_CONFIGS = {
             ),
             "next_page_pattern": (
                 "//div[contains(@class, 'paginator')]//li[contains(@class, 'paginator__active-page')]"
-                "/following-sibling::li[1]"
+                "/following-sibling::li[1]//a/@href"
             ),
         },
         "scraper_request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
-            # "js_render": "true",
-            # "js_instructions": """[{"wait_for":".body-elements-container"}]""",
         },
         "scrape_patterns": {
             "title": {
@@ -245,15 +244,14 @@ SCRAPE_CONFIGS = {
     },
     "tagesspiegel": {
         "site_name": "tagesspiegel",
-        "enabled": True,
+        "enabled": False,
         "base_url": "https://www.tagesspiegel.de",
-        "search_url_template": "https://www.tagesspiegel.de/archiv/{year}/{month}/{day}",
+        "search_url_templates": [
+            "https://www.tagesspiegel.de/archiv/{year}/{month}/{day}"
+        ],
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
             "js_render": "true",
-            # "js_instructions": """[{"wait_for":"#page-container"}]""",
         },
         "site_elements_patterns": {
             "articles_pattern": (
@@ -265,14 +263,11 @@ SCRAPE_CONFIGS = {
             ),
             "next_page_pattern": (
                 "//div[@id='page-container']//main[@id='main-content']//nav//li//a[@aria-current='page']/parent::li"
-                "/following-sibling::li[1]"
+                "/following-sibling::li[1]//a/@href"
             ),
         },
         "scraper_request_params": {
-            # "premium_proxy": "true",
-            # "proxy_country": "de",
             "js_render": "true",
-            # "js_instructions": """[{"wait_for":"#main-content"}]""",
         },
         "scrape_patterns": {
             "title": {
@@ -304,14 +299,17 @@ SCRAPE_CONFIGS = {
     },
     "heise": {
         "site_name": "heise",
-        "enabled": True,
+        "enabled": False,
         "base_url": "https://www.heise.de",
-        "search_url_template": "https://www.heise.de/newsticker/archiv/{year}/{month}",
+        "search_url_templates": [
+            "https://www.heise.de/newsticker/archiv/{year}/{month}"
+        ],
         "scraper_class": NewsArchiveScraper,
         "crawler_request_params": {
             "premium_proxy": "true",
             "proxy_country": "de",
             "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"section.archive__day"}]""",
         },
         "site_elements_patterns": {
             "articles_pattern": (
@@ -323,9 +321,7 @@ SCRAPE_CONFIGS = {
             "premium_proxy": "true",
             "proxy_country": "de",
             "js_render": "true",
-            # "js_instructions": (
-            #     """[{"click":".selector"},{"wait":500},{"fill":[".input","value"]},{"wait_for":".slow_selector"}]"""
-            # ),
+            "js_instructions": """[{"wait":500},{"wait_for":"header.a-article-header"}]""",
         },
         "scrape_patterns": {
             "title": {
@@ -363,6 +359,348 @@ SCRAPE_CONFIGS = {
                     "//div[contains(@class, 'article-content')]//p//text() | "
                     "//div[contains(@class, 'article-layout__content-container')]"
                     "//div[contains(@class, 'article-content')]//*[contains(@class, 'subheading')]//text()"
+                ),
+                "extract_all": True,
+            },
+        },
+        "blacklisted_urls": [],
+        "blacklisted_url_patterns": [],
+    },
+    "presseportal": {
+        "site_name": "presseportal",
+        "enabled": True,
+        "base_url": "https://www.presseportal.de",
+        "search_url_templates": [
+            "https://www.presseportal.de/blaulicht/nr/50510?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/blaulicht/nr/121243?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/nr/62259?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/nr/171676?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/blaulicht/r/Essen%20-%20Duisburg?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/blaulicht/r/Duisburg?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+            "https://www.presseportal.de/r/Duisburg?startDate={year}-{month}-{day}&endDate={year}-{month}-{day}",
+        ],
+        "scraper_class": NewsArchiveScraper,
+        "crawler_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"ul.article-list"}]""",
+        },
+        "site_elements_patterns": {
+            "articles_pattern": "//article[contains(@class, 'news')]//h3[contains(@class, 'news-headline-clamp')]//a/@href",
+            "paginator_pattern": "//div[contains(@class, 'pagination')]",
+            "active_page_pattern": "//div[contains(@class, 'pagination')]//span[contains(@class, 'active')]",
+            "next_page_pattern": "//div[contains(@class, 'pagination')]//span[contains(@class, 'pagination-next')]/@data-url"
+        },
+        "scraper_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div.card"}]""",
+        },
+        "scrape_patterns": {
+            "title": {
+                "pattern": "//article[contains(@class, 'story')]//h1//text()",
+            },
+            "description": {
+                "pattern": None,
+            },
+            "raw_date": {
+                "pattern": "//article[contains(@class, 'story')]//p[contains(@class, 'date')]//text()",
+            },
+            "parsed_date": {
+                "pattern": "//article[contains(@class, 'story')]//p[contains(@class, 'date')]//text()",
+                "parse_func": parse_date,
+            },
+            "paragraphs": {
+                "pattern": "//article[contains(@class, 'story')]//p[not(@class)]//text()",
+                "extract_all": True,
+            },
+        },
+        "blacklisted_urls": [],
+        "blacklisted_url_patterns": [],
+    },
+    "rheinischepost": {
+        "site_name": "rheinischepost",
+        "enabled": True,
+        "base_url": "https://rp-online.de",
+        "search_url_templates": [
+            "https://rp-online.de/nrw/staedte/duisburg/archiv/{year}/{month}/{day}/"
+        ],
+        "scraper_class": NewsArchiveScraper,
+        "crawler_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"click":"custom-button#consentAccept"},{"wait":500},{"wait_for":"div.content-list"}]""",
+        },
+        "site_elements_patterns": {
+            "articles_pattern": "//div[contains(@class, 'content-list')]//article//div[@data-teaser-grid]//a/@href",
+        },
+        "scraper_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"click":"custom-button#consentAccept"},{"wait":500},{"wait_for":"article"}]""",
+        },
+        "scrape_patterns": {
+            "title": {
+                "pattern": "//article[@data-park-article]//header//span[@data-cy='article_headline']//text()",
+            },
+            "description": {
+                "pattern": "//article[@data-park-article]//p//strong[@data-cy='intro']//text()",
+            },
+            "raw_date": {
+                "pattern": "//article[@data-park-article]//div[@data-cy='date']//text()",
+            },
+            "parsed_date": {
+                "pattern": "//article[@data-park-article]//div[@data-cy='date']//text()",
+                "parse_func": parse_date,
+            },
+            "paragraphs": {
+                "pattern": (
+                    "//article[@data-park-article]"
+                    "//div[@data-cy='article_content']"
+                    "//div[@data-cy='article-content-text']"
+                    "//p//text()"
+                ),
+                "extract_all": True,
+            },
+        },
+        "blacklisted_urls": [],
+        "blacklisted_url_patterns": [],
+    },
+    "duisburg-de": {
+        "site_name": "duisburg-de",
+        "enabled": True,
+        "base_url": "https://www.duisburg.de",
+        "search_url_templates": [
+            (
+                "https://www.duisburg.de/allgemein/newsdesk/index_54228.php?"
+                "form=newsdeskSearch-1.form&sp%3Afulltext%5B%5D=&sp%3Acategories%5B30338%5D%5B%5D=-"
+                "&sp%3Acategories%5B30338%5D%5B%5D=__last__"
+                "&sp%3AdateFrom%5B%5D={year}-{month}-{day}"
+                "&sp%3AdateTo%5B%5D={year}-{month}-{day}"
+                "&action=submit"
+            )
+        ],
+        "scraper_class": NewsArchiveScraper,
+        "overwrite_date_if_not_exists": True,
+        "crawler_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div.SP-TeaserList"}]""",
+        },
+        "site_elements_patterns": {
+            "articles_pattern": (
+                "//div[contains(@class, 'SP-TeaserList')]"
+                "//li[contains(@class, 'SP-TeaserList__item')]"
+                "//a[contains(@class, 'SP-Teaser SP-Teaser--textual')]"
+                "/@href"
+            ),
+        },
+        "scraper_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"article#SP-Content"}]""",
+        },
+        "scrape_patterns": {
+            "title": {
+                "pattern": (
+                    "//article[contains(@id, 'SP-Content')]"
+                    "//header[contains(@class, 'SP-ArticleHeader')]"
+                    "//h1[contains(@class, 'SP-Headline--article')]"
+                    "//text()"
+                ),
+            },
+            "description": {
+                "pattern": (
+                    "//article[contains(@id, 'SP-Content')]"
+                    "//div[contains(@class, 'SP-Intro')]"
+                    "//p//text()"
+                ),
+            },
+            "raw_date": {
+                "pattern": (
+                    "//article[contains(@id, 'SP-Content')]"
+                    "//div[contains(@class, 'SP-Text')]"
+                    "//p//em//text()"
+                ),
+            },
+            "parsed_date": {
+                "pattern": (
+                    "//article[contains(@id, 'SP-Content')]"
+                    "//div[contains(@class, 'SP-Text')]"
+                    "//p//em//text()"
+                ),
+                "parse_func": parse_date,
+            },
+            "paragraphs": {
+                "pattern": (
+                    "//article[contains(@id, 'SP-Content')]"
+                    "//div[contains(@class, 'SP-Text')]"
+                    "//p//text()"
+                ),
+                "extract_all": True,
+            },
+        },
+        "blacklisted_urls": [],
+        "blacklisted_url_patterns": [],
+    },
+    "lokalklick": {
+        "site_name": "lokalklick",
+        "enabled": True,
+        "base_url": "https://lokalklick.eu",
+        "search_url_templates": [
+            "https://lokalklick.eu/category/ort/duisburg/",
+        ],
+        "scraper_class": NewsArchiveScraper,
+        "crawler_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div.td-container"}]""",
+        },
+        "site_elements_patterns": {
+            "articles_pattern": (
+                "//div[contains(@class, 'td-container')]"
+                "//div[contains(@class, 'td-ss-main-content')]"
+                "//div[contains(@class, 'item-details')]"
+                "//h3[contains(@class, 'entry-title')]"
+                "//a//@href"
+            ),
+            "paginator_pattern": "//div[contains(@class, 'page-nav')]",
+            "active_page_pattern": "//div[contains(@class, 'page-nav')]//span[contains(@class, 'current')]",
+            "next_page_pattern": (
+                "//div[contains(@class, 'page-nav')]//a//i[contains(@class, 'td-icon-menu-right')]/parent::a/@href"
+            ),
+        },
+        "scraper_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"article.post"}]""",
+        },
+        "scrape_patterns": {
+            "title": {
+                "pattern": (
+                    "//article[contains(@class, 'post')]"
+                    "//div[contains(@class, 'td-post-header')]"
+                    "//header[contains(@class, 'td-post-title')]"
+                    "//h1[contains(@class, 'entry-title')]"
+                    "//text()"
+                ),
+            },
+            "description": {
+                "pattern": None,
+            },
+            "raw_date": {
+                "pattern": (
+                    "//article[contains(@class, 'post')]"
+                    "//div[contains(@class, 'td-post-header')]"
+                    "//header[contains(@class, 'td-post-title')]"
+                    "//div[contains(@class, 'td-module-meta-info')]"
+                    "//time[contains(@class, 'entry-date')]"
+                    "//text()"
+                ),
+            },
+            "parsed_date": {
+                "pattern": (
+                    "//article[contains(@class, 'post')]"
+                    "//div[contains(@class, 'td-post-header')]"
+                    "//header[contains(@class, 'td-post-title')]"
+                    "//div[contains(@class, 'td-module-meta-info')]"
+                    "//time[contains(@class, 'entry-date')]"
+                    "//text()"
+                ),
+                "parse_func": parse_date,
+            },
+            "paragraphs": {
+                "pattern": (
+                    "//article[contains(@class, 'post')]"
+                    "//div[contains(@class, 'td-post-content')]"
+                    "/p[not(@class)]//text()"
+                ),
+                "extract_all": True,
+            },
+        },
+        "blacklisted_urls": [],
+        "blacklisted_url_patterns": [],
+    },
+    "lokalkompass": {
+        "site_name": "lokalkompass",
+        "enabled": True,
+        "base_url": "https://www.lokalkompass.de",
+        "search_url_templates": [
+            "https://lokalkompass.de/tag/duisburg/",
+        ],
+        "scraper_class": NewsArchiveScraper,
+        "crawler_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div#content-main"}]""",
+        },
+        "site_elements_patterns": {
+            "articles_pattern": (
+                "//div[@id='content-main']"
+                "//div[contains(@class, 'article-group-list-loop')]"
+                "//article[contains(@class, 'article-list-item')]"
+                "//h3[contains(@class, 'article-card-headline')]"
+                "//a//@href"
+            ),
+            "paginator_pattern": "//div[@id='content-main']//ul[contains(@class, 'pagination')]",
+            "active_page_pattern": (
+                "//div[@id='content-main']"
+                "//ul[contains(@class, 'pagination')]"
+                "//li[contains(@class, 'current')]"
+            ),
+            "next_page_pattern": (
+                "//div[@id='content-main']"
+                "//ul[contains(@class, 'pagination')]"
+                "//li//i[contains(@class, 'fa-angle-right')]"
+                "/parent::a/@href"
+            ),
+        },
+        "scraper_request_params": {
+            "js_render": "true",
+            "js_instructions": """[{"wait":500},{"wait_for":"div#content-main"}]""",
+        },
+        "scrape_patterns": {
+            "title": {
+                "pattern": (
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//header/h1/text()"
+                ),
+            },
+            "description": {
+                "pattern": (
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//div[@id='content-main']"
+                    "//div[@data-content-text]"
+                    "//p[1]/b/text()"
+                ),
+            },
+            "raw_date": {
+                "pattern": (
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//header"
+                    "//div[contains(@class, 'article-author')]"
+                    "//ul[contains(@class, 'article-meta')]"
+                    "/li[1]/text()"
+                ),
+            },
+            "parsed_date": {
+                "pattern": (
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//header"
+                    "//div[contains(@class, 'article-author')]"
+                    "//ul[contains(@class, 'article-meta')]"
+                    "/li[1]/text()"
+                ),
+                "parse_func": parse_date,
+            },
+            "paragraphs": {
+                "pattern": (
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//div[@id='content-main']"
+                    "//div[@data-content-text]"
+                    "//p//text()"
+                    " | "
+                    "//div[@role='content']"
+                    "//article[contains(@class, 'article-main')]"
+                    "//div[@id='content-main']"
+                    "//div[@data-content-text]"
+                    "//h2//text()"
                 ),
                 "extract_all": True,
             },

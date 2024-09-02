@@ -17,7 +17,8 @@ class NewsArchiveScraper(NewsScraper):
 
     def __init__(self, params: NewsArchiveScraperParams):
         super().__init__(params)
-        self._search_url_template = params.search_url_template
+        self._search_url_templates = params.search_url_templates
+        self._overwrite_date_if_not_exists = params.overwrite_date_if_not_exists
 
     def _get_start_urls(self, start_date: datetime.datetime, end_date: datetime.datetime = None):
         if end_date is None:
@@ -25,11 +26,13 @@ class NewsArchiveScraper(NewsScraper):
         else:
             dates = date_range(start=start_date.strftime("%Y-%m-%d"), end=end_date.strftime("%Y-%m-%d"))
             dates = dates.strftime("%Y-%m-%d")
-        start_urls = []
-        for date in dates:
-            year, month, day = date.split("-")
-            start_urls.append(self._search_url_template.format(year=year, month=month, day=day))
-        start_urls = sorted(set(start_urls), reverse=True)
+        start_urls = {}
+        for search_url_template in self._search_url_templates:
+            for date in dates:
+                year, month, day = date.split("-")
+                start_url = search_url_template.format(year=year, month=month, day=day)
+                start_urls[start_url] = date
+        start_urls = sorted([(date, start_url) for start_url, date in start_urls.items()], reverse=True)
         return start_urls
 
     def _run(self, start_date: datetime.datetime, page_limit: int, end_date: datetime.datetime = None):
@@ -44,7 +47,8 @@ class NewsArchiveScraper(NewsScraper):
 
         while len(start_urls) > 0:
             self.logger.info(f"{len(start_urls)} urls left to crawl ...")
-            start_url = start_urls.popleft()
+            start_url_date, start_url = start_urls.popleft()
+            last_evaluated_date = start_url_date
             page_content = self.get_page_source(start_url, crawl_req_params)
             if self._check_page_limit_reached(page_content, page_limit):
                 self.logger.info(f"Page limit reached for site: {start_url} ...")
@@ -63,11 +67,15 @@ class NewsArchiveScraper(NewsScraper):
                     self.logger.info(f"Extracting content from {article_url} ...")
                     article_content = self.get_page_source(article_url, scrape_req_params)
                     parsed_content = parse_website(article_content, self._scrape_patterns)
+                    if self._overwrite_date_if_not_exists:
+                        parsed_content["parsed_date"] = parsed_content.get("parsed_date") or start_url_date
+                        parsed_content["raw_date"] = parsed_content.get("raw_date") or start_url_date
                     if (article_date := parsed_content.get("parsed_date")) is not None:
                         date_limit_reached = article_date < start_date.strftime("%Y-%m-%d")
                     articles_repository.add_article(
                         url=article_url, site_name=self._site_name, visited=True, **parsed_content
                     )
+                    last_evaluated_date = article_date
                 if date_limit_reached:
                     break
 
@@ -77,7 +85,7 @@ class NewsArchiveScraper(NewsScraper):
 
             next_page_url = self._get_next_page(page_content)
             if next_page_url is not None:
-                start_urls.appendleft(next_page_url)
+                start_urls.appendleft((last_evaluated_date, next_page_url))
                 self.logger.info(f"Visiting next page ...")
 
         self.logger.info(f"Successfully crawled articles from {self._base_url}.")

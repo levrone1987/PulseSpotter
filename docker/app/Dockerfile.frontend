@@ -9,6 +9,7 @@ WORKDIR /app
 # Copy relevant files and folders
 RUN mkdir -p pulsespotter
 COPY ./pulsespotter/frontend ./pulsespotter/frontend
+COPY ./pulsespotter/utils ./pulsespotter/utils
 COPY ./pulsespotter/__init__.py ./pulsespotter/
 COPY ./pulsespotter/config.py ./pulsespotter/
 COPY ./docker/app/requirements-frontend.txt ./requirements.txt

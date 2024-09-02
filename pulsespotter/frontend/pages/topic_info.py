@@ -32,11 +32,26 @@ if __name__ == '__main__':
     end_date = st.query_params.get('end_date', None)
 
     # display back button
-    trending_topics_url = f"/trending_topics?start_date={start_date}&end_date={end_date}"
+    trending_topics_url = f""
     if not start_date or not end_date:
         trending_topics_url = "/trending_topics"
-    st.markdown(f'<a href="{trending_topics_url}" target="_self"><b>Back to Trending Topics</b></a>',
-                unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <a href="/trending_topics?start_date={start_date}&end_date={end_date}" target="_self">
+        <b>Back to Trending Topics</b>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        f"""
+        <a href="/topic_trends_prediction?start_date={start_date}&end_date={end_date}" target="_self">
+        <b>Back to Topic Trends Prediction</b>
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+    st.write("---")
 
     # the application will not be loaded correctly without a valid topic_id (only available from the db)
     if topic_id:
@@ -70,6 +85,7 @@ if __name__ == '__main__':
             x=dates,
             y=counts,
             labels={'x': 'Date', 'y': 'Number of articles'},
+            markers="o",
         )
         st.plotly_chart(fig)
 

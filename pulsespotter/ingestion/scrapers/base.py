@@ -75,9 +75,9 @@ class NewsScraper(ABC, metaclass=LoggingMeta):
         if next_page_pattern is None:
             return None
         selector = Selector(text=page_content)
-        next_page_element = selector.xpath(next_page_pattern).get()
-        if next_page_element is not None:
-            next_page_url = selector.xpath(f"""{next_page_pattern}//a/@href""").get()
+        next_page_url = selector.xpath(next_page_pattern).get()
+        if next_page_url is not None:
+            next_page_url = next_page_url.lstrip(" ").lstrip("@")
             next_page_url = urljoin(self._base_url, next_page_url)
             return next_page_url
 

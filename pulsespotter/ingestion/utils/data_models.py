@@ -1,4 +1,4 @@
-from typing import Optional, Callable, Dict
+from typing import Optional, Callable, Dict, List
 
 from pydantic import BaseModel, ConfigDict
 
@@ -24,7 +24,7 @@ class SiteElementsPatterns(BaseModel):
 
 class ScrapePattern(BaseModel):
     model_config = ConfigDict(frozen=True)
-    pattern: str
+    pattern: Optional[str] = None
     extract_all: bool = False
     parse_func: Optional[Callable] = None
 
@@ -45,4 +45,5 @@ class NewsScraperParams(BaseModel):
 
 
 class NewsArchiveScraperParams(NewsScraperParams):
-    search_url_template: str
+    search_url_templates: List[str]
+    overwrite_date_if_not_exists: Optional[bool] = False

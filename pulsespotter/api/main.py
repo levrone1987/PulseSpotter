@@ -1,13 +1,27 @@
 from fastapi import FastAPI, Depends
 
 from pulsespotter.api.data_models import DateRangeRequest, ArticleSearchRequest
+from pulsespotter.api.utils.inference import load_model, delete_model, get_topics_data, \
+    predict_trending_topic_score
+from pulsespotter.config import MODEL_FILENAME
 from pulsespotter.db.dao import *
 from pulsespotter.db.repositories.article_embeddings import ArticleEmbeddingsRepository
 from pulsespotter.db.repositories.articles import ArticlesRepository
 from pulsespotter.db.repositories.topic_assignments import TopicAssignmentsRepository
 from pulsespotter.db.repositories.topic_embeddings import TopicEmbeddingsRepository
+from pulsespotter.db.repositories.topics_vectors import TopicsVectorsRepository
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup_event():
+    load_model(MODEL_FILENAME)
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    delete_model()
 
 
 @app.get("/api/articles/info/{article_id}")
@@ -127,4 +141,31 @@ async def get_similar_topics(
         embeddings_repository: TopicEmbeddingsRepository = Depends(get_topic_embeddings_repository),
 ):
     response = embeddings_repository.search_similar(topic_id=topic_id, limit=10, min_similarity=0.5)
+    return response
+
+
+@app.post("/api/topics/predict-topic-trends")
+async def predict_topic_trends(
+        request: DateRangeRequest,
+        topic_assignments_repository: TopicAssignmentsRepository = Depends(get_topic_assignments_repository),
+        topic_embeddings_repository: TopicEmbeddingsRepository = Depends(get_topic_embeddings_repository),
+        topic_vectors_repository: TopicsVectorsRepository = Depends(get_topics_vectors_repository),
+):
+    topics_data = get_topics_data(
+        topic_start_date=request.start_date,
+        topic_end_date=request.end_date,
+        topic_assignments_repository=topic_assignments_repository,
+        topic_embeddings_repository=topic_embeddings_repository,
+        topic_vectors_repository=topic_vectors_repository,
+    )
+    if topics_data is None:
+        return {}
+    topics_data["num_articles"] = topics_data["counts"].apply(sum)
+    topics_data["probability"] = topics_data.apply(
+        lambda x: predict_trending_topic_score(x["counts"], x["topic_embedding"]),
+        axis=1,
+    )
+    topics_data = topics_data.loc[topics_data["probability"] >= 0.5]
+    topics_data = topics_data.sort_values(by="probability", ascending=False, ignore_index=True)
+    response = topics_data[["topic_id", "topic_label", "num_articles", "probability"]].to_dict("records")
     return response

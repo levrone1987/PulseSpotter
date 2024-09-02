@@ -1,7 +1,9 @@
 fastapi
 uvicorn
+pandas
 pymongo
 more-itertools
 dateparser
 numpy
+torch
 qdrant-client

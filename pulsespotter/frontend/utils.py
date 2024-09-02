@@ -58,5 +58,5 @@ def group_text_chunks(chunks):
 def truncate_text_content(text: str, max_len: int):
     punctuation_set = {".", "!", "?"}
     truncated = text[:max_len]
-    last_sentence_stop_idx = max((i for i, char in enumerate(text) if char in punctuation_set), default=-1)
+    last_sentence_stop_idx = max((i for i, char in enumerate(truncated) if char in punctuation_set), default=-1)
     return truncated[:last_sentence_stop_idx + 1]
