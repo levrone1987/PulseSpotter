@@ -18,7 +18,7 @@ COPY ./pulsespotter/training/utils ./pulsespotter/training/utils
 COPY ./docker/app/requirements-api.txt ./requirements.txt
 
 # Copy resource files
-COPY ./pulsespotter/resources/model.pt ./pulsespotter/resources/model.pt
+COPY ./pulsespotter/resources/ ./pulsespotter/resources/
 
 # Install the dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt

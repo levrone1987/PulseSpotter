@@ -1,7 +1,0 @@
-.idea/*
-**/.DS_Store
-**/__pycache__/**
-logs/*
-plugins/*
-.env
-**/.ipynb_checkpoints/**

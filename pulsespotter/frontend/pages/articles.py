@@ -50,6 +50,7 @@ if __name__ == '__main__':
         st.header("Topic assignment")
         topic_id = article_data["topic_id"]
         topic_label = article_data["topic_label"]
+        topic_label = "_".join(topic_label.split("_")[1:])
         topic_link = f"/topic_info?topic_id={topic_id}"
         st.markdown(f'Assigned topic: <a href="{topic_link}" target="_self">{topic_label}</a>',
                     unsafe_allow_html=True)

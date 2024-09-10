@@ -11,12 +11,8 @@ services:
       - "8000:8000"
     networks:
       - app-network
-    environment:
-      - MONGO_HOST=
-      - MONGO_DATABASE=
-      - QDRANT_HOST=
-      - QDRANT_API_KEY=
-      - MODEL_FILENAME=
+    env_file:
+      - pulsespotter-duisburg.env
 
   frontend:
     build:

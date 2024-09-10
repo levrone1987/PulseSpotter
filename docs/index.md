@@ -1,19 +1,28 @@
-<br />
+---
+title: PulseSpotter
+summary: PulseSpotter delivers AI-powered insights in news trends.
+date: 2024-09-09
+authors:
+  - Mirza Klimenta
+hide:
+  - navigation
+extra:
+  class: hide-title
+---
 
-<div align="center">
-  <a href="https://github.com/levrone1987/PulseSpotter">
-        <img src="images/pulsespotter-logo.svg" width="180" title="PulseSpotter">
-    </a>
-  <h1 align="center">PulseSpotter</h1>
-  <p align="center">delivers AI-powered insights in news trends</p>
-  
-  [![License](https://img.shields.io/github/license/levrone1987/PulseSpotter?color=green)](https://github.com/levrone1987/PulseSpotter/blob/main/LICENSE)
-  [![GitHub issues](https://img.shields.io/github/issues/levrone1987/PulseSpotter)](https://github.com/levrone1987/PulseSpotter/issues)
-  [![GitHub stars](https://img.shields.io/github/stars/levrone1987/PulseSpotter)](https://github.com/levrone1987/PulseSpotter/stargazers)
+<div class="hero">
+    <div class="hero-content">
+        <h1>PulseSpotter</h1>
+        <p>
+        PulseSpotter delivers AI-powered insights in news trends.
+        </p>
+        <a href="walkthrough" class="button secondary">Walkthrough</a>
+    </div>
 </div>
 
 > [!WARNING]
 > This application is currently in alpha state and under active development. Please be aware that the API and features may change at any time.
+
 
 ## Project Description
 

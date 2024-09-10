@@ -16,3 +16,4 @@ tenacity
 torchinfo
 umap-learn
 qdrant-client
+openai

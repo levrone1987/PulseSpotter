@@ -13,9 +13,11 @@ def get_topic_summary_card(topic_data: Dict) -> str:
     score = topic_data.get("probability")
     if score:
         score_component = f"<span><strong>Trending Score:</strong> {score:.4f}</span><br/>"
+    topic_title = topic_data['topic_label']
+    topic_title = "_".join(topic_title.split("_")[1:])
     return f"""
     <div class="summary_card">
-        <h5>{topic_data['topic_label']}</h5>
+        <h5>{topic_title}</h5>
         <strong>Number of articles:</strong> {topic_data['num_articles']}<br/>
         {score_component}
         <span><a href="{refer_link}" target="_self">See more</a></span>

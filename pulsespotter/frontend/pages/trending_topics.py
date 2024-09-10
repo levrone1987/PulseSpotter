@@ -25,8 +25,10 @@ def get_trending_topics(start_date: str, end_date: str) -> Optional[Dict]:
 
 
 def create_trending_topics_pie_chart(trending_topics_data: Dict):
+    topic_labels = [topic['topic_label'] for topic in trending_topics_data]
+    topic_labels = ["_".join(topic_label.split("_")[1:]) for topic_label in topic_labels]
     return px.pie(
-        names=[topic['topic_label'] for topic in trending_topics_data],
+        names=topic_labels,
         values=[topic['num_articles'] for topic in trending_topics_data],
         hole=0.2,
     )

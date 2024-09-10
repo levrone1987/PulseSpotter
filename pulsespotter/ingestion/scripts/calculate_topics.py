@@ -3,8 +3,10 @@ from datetime import timedelta
 from typing import List
 
 import numpy as np
+import openai
 import pandas as pd
 from bertopic import BERTopic
+from bertopic.representation import OpenAI
 from bertopic.vectorizers import ClassTfidfTransformer
 from bson import ObjectId
 from hdbscan import HDBSCAN
@@ -68,6 +70,17 @@ def extract_article_content(article: dict):
 
 
 def build_topic_model() -> BERTopic:
+    representation_model = None
+    if OPENAI_API_KEY:
+        openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
+        representation_model = OpenAI(
+            openai_client,
+            model="gpt-4o-mini",
+            chat=True,
+            tokenizer="char",
+            doc_length=1000,
+            nr_docs=5,
+        )
     # components of the BERTopic algorithm
     umap_model = UMAP(n_neighbors=3, n_components=3, min_dist=0.0, metric="cosine")
     hdbscan_model = HDBSCAN(min_cluster_size=3, min_samples=1)
@@ -78,6 +91,7 @@ def build_topic_model() -> BERTopic:
         hdbscan_model=hdbscan_model,
         ctfidf_model=ctfidf_model,
         vectorizer_model=vectorizer_model,
+        representation_model=representation_model,
     )
 
 

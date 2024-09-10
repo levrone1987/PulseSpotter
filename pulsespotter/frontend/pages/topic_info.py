@@ -67,6 +67,7 @@ if __name__ == '__main__':
         # extract and display the topic information
         first_item = topic_assignments_data[0]
         topic_label = first_item.get("topic_label", "N/A")
+        topic_label = "_".join(topic_label.split("_")[1:])
         topic_start_date = first_item.get("topic_start_date", "N/A")
         topic_end_date = first_item.get("topic_end_date", "N/A")
         st.write(f"**Topic Label:** {topic_label}")
