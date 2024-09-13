@@ -148,9 +148,9 @@ if __name__ == '__main__':
     # training parameters
     train_batch_size = 8
     val_batch_size = 16
-    num_epochs = 200
-    learning_rate = 2e-5
-    weight_decay = 1e-3
+    num_epochs = 400
+    learning_rate = 3e-5
+    weight_decay = 2e-3
     log_every = 10
 
     # optimizer and loss function

@@ -134,7 +134,7 @@ def find_matches_to_trending_topics(prev_week_date_range, next_week_date_range, 
     """
 
     dst_topics = topic_assignments[prev_week_date_range]["topic_id"].unique().tolist()
-    src_topics = get_trending_topics(topic_assignments[next_week_date_range], top_pct=0.1)
+    src_topics = get_trending_topics(topic_assignments[next_week_date_range], top_pct=0.2)
 
     dst_topics_embeddings = np.array([topic_embeddings[topic_id] for topic_id in dst_topics])
     src_topics_embeddings = np.array([topic_embeddings[topic_id] for topic_id in src_topics])

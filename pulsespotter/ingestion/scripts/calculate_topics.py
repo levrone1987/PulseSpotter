@@ -82,8 +82,8 @@ def build_topic_model() -> BERTopic:
             nr_docs=5,
         )
     # components of the BERTopic algorithm
-    umap_model = UMAP(n_neighbors=3, n_components=3, min_dist=0.0, metric="cosine")
-    hdbscan_model = HDBSCAN(min_cluster_size=3, min_samples=1)
+    umap_model = UMAP(n_neighbors=5, n_components=3, min_dist=0.0, metric="cosine")
+    hdbscan_model = HDBSCAN(min_cluster_size=2, min_samples=1)
     ctfidf_model = ClassTfidfTransformer(bm25_weighting=True, reduce_frequent_words=True)
     vectorizer_model = CountVectorizer(min_df=1, ngram_range=(1, 3))
     return BERTopic(
@@ -92,6 +92,8 @@ def build_topic_model() -> BERTopic:
         ctfidf_model=ctfidf_model,
         vectorizer_model=vectorizer_model,
         representation_model=representation_model,
+        min_topic_size=5,
+        top_n_words=15,
     )
 
 
